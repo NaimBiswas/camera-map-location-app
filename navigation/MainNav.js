@@ -23,18 +23,23 @@ const MainNav = () => {
                   fontSize: 17,
                },
                headerTintColor: "#fff",
+
             }}
 
 
             initialRouteName="Home">
             <StackNav.Screen
                options={{
-
+                  animation: 'flip'
                }}
                name="Home" component={PlaceListScreen} />
 
 
-            <StackNav.Screen name="PlaceDetails" component={PlaceDetailsScreen} />
+            <StackNav.Screen
+               options={{
+                  animation: 'fade'
+               }}
+               name="PlaceDetails" component={PlaceDetailsScreen} />
             <StackNav.Screen name="AddNew" component={AddNewScreen} />
             <StackNav.Screen name="Map" component={MapScreen} />
          </StackNav.Navigator>
