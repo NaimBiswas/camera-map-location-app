@@ -50,7 +50,7 @@ const PlaceListScreen = ({ navigation }) => {
                      >
                         PP
                      </Avatar>
-                     <Text fontSize="lg" bold px={10} py={2} color={'#fff'} >
+                     <Text textTransform={'capitalize'} fontSize="lg" bold px={10} py={2} color={'#fff'} >
                         {item.title}
                      </Text>
                   </Box>

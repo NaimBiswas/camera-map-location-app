@@ -10,7 +10,8 @@ const placeSlice = createSlice({
       setPlace: (state, action) => {
          const id = action.payload.id;
          const title = action.payload.title;
-         state.place.push({ 'id': id, 'title': title });
+         const image = action.payload.image;
+         state.place.push({ "id": id, "title": title, "image": image });
       },
    },
 });
