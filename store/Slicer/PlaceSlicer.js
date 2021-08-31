@@ -1,22 +1,22 @@
 /* eslint-disable prettier/prettier */
-import { createSlice, } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const placeSlice = createSlice({
    name: 'place',
    initialState: {
-      title: '',
-      image: '',
-      time: ''
+      place: [],
    },
    reducers: {
       setPlace: (state, action) => {
-         state.title = action.payload
+         const id = action.payload.id;
+         const title = action.payload.title;
+         state.place.push({ 'id': id, 'title': title });
       },
    },
 });
 
 export const { setPlace } = placeSlice.actions;
 
-export default placeSlice.reducer
+export default placeSlice.reducer;
 
 

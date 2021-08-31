@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { Box, Button, Heading, Input, ScrollView, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setPlace } from '../store/Slicer/PlaceSlicer';
 const AddNewScreen = ({ route, navigation }) => {
    const [isLoading, setisLoading] = useState(false);
@@ -15,7 +15,6 @@ const AddNewScreen = ({ route, navigation }) => {
          title: title,
       });
    }, [title, navigation]);
-
 
 
    return (
@@ -44,8 +43,9 @@ const AddNewScreen = ({ route, navigation }) => {
                   return errors;
                }}
                onSubmit={values => {
+                  const id = new Date().toISOString()
                   setisLoading(true);
-                  dispatch(setPlace(values.title));
+                  dispatch(setPlace({ id: id, title: values.title }));
                   setisLoading(false);
                   navigation.goBack()
                }}
