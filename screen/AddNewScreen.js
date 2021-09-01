@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Formik } from 'formik';
-import { Actionsheet, Box, Button, Center, Divider, Heading, Image, Input, Popover, ScrollView, Text, useDisclose } from 'native-base';
+import { Actionsheet, Box, Button, Center, Divider, Heading, Image, Input, Popover, ScrollView, Text, useDisclose, useToast } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,7 @@ import { Icon } from 'react-native-elements';
 const AddNewScreen = ({ route, navigation }) => {
    const [isLoading, setisLoading] = useState(false);
    const { isOpen, onOpen, onClose } = useDisclose();
+   const toast = useToast();
    const [image, setImage] = useState('https://wallpaperaccess.com/full/317501.jpg');
    const { title } = route.params;
    const dispatch = useDispatch();
@@ -25,9 +26,13 @@ const AddNewScreen = ({ route, navigation }) => {
          width: 300,
          height: 400,
          cropping: true,
+         includeBase64: true,
+         forceJpg: true,
       }).then(image => {
-         setImage(image.path);
-         onClose
+         setImage(`data:${image.mime};base64,${image.data}`);
+         onClose;
+      }).catch(err => {
+         console.log(err);
       });
    };
    const takePhotoFromGallery = () => {
@@ -35,12 +40,17 @@ const AddNewScreen = ({ route, navigation }) => {
          width: 300,
          height: 400,
          cropping: true,
+         includeBase64: true,
       }).then(image => {
-         setImage(image.path);
-         onClose
+
+         setImage(`data:${image.mime};base64,${image.data}`);
+
+
+
+      }).catch(err => {
+         console.warn(err);
       });
-   };
-   return (
+   }; return (
       <ScrollView
          px={3}
          bg="#06111C"
@@ -80,8 +90,30 @@ const AddNewScreen = ({ route, navigation }) => {
                   return errors;
                }}
                onSubmit={values => {
+
                   const id = new Date().toISOString();
                   setisLoading(true);
+                  fetch('https://shop-bc.herokuapp.com/api/image', {
+                     method: 'POST',
+                     headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                     },
+                     body: JSON.stringify({
+                        image: image,
+                        title: title,
+                     }),
+                  }).then(res => res.json()).then((result) => {
+                     toast.show({
+                        title: result.message,
+                        status: 'success',
+                        description: 'Good wished for your features',
+                     });
+
+                  }).catch((err) => {
+                     console.error(err);
+                  });
                   dispatch(setPlace({ id: id, title: values.title, image: image }));
                   setisLoading(false);
                   navigation.goBack();
@@ -132,7 +164,7 @@ const AddNewScreen = ({ route, navigation }) => {
          </Box>
 
 
-         <Button mt={4} onPress={onOpen}>Change Photo</Button>
+         <Button mt={4} mb={5} onPress={onOpen}>Change Photo</Button>
 
 
          <Actionsheet isOpen={isOpen} onClose={onClose}>

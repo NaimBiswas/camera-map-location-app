@@ -11,8 +11,6 @@ const PlaceListScreen = ({ navigation }) => {
 
    const data = useSelector(state => state.place.place);
 
-
-
    useEffect(() => {
       navigation.setOptions({
          headerRight: () => (

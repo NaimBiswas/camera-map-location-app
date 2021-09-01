@@ -1,17 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { createSlice } from '@reduxjs/toolkit';
-
+import { Button, useToast } from 'native-base';
 const placeSlice = createSlice({
+
    name: 'place',
    initialState: {
       place: [],
    },
    reducers: {
-      setPlace: (state, action) => {
+      setPlace: (state, action,) => {
          const id = action.payload.id;
          const title = action.payload.title;
          const image = action.payload.image;
-         state.place.push({ "id": id, "title": title, "image": image });
+         state.place.push({ 'id': id, 'title': title, 'image': image });
       },
    },
 });
